@@ -17,7 +17,7 @@ Headless CMS for managing LWO content.
    cp .env.example .env
    ```
    
-   The `.env` file is already configured with development secrets for SQLite.
+   **Note:** The `.env` file is already created with development secrets for SQLite. You only need to copy from `.env.example` if you deleted it or want to use PostgreSQL.
 
 3. Build the admin panel:
    ```bash
@@ -71,7 +71,7 @@ DATABASE_SSL=false
 See `.env.example` for all available configuration options.
 
 Key variables:
-- `PORT`: Server port (default: 1337)
+- `PORT`: Server port (default: 1337) - configured in .env, not via command line
 - `DATABASE_CLIENT`: Database type (sqlite or postgres)
 - `APP_KEYS`: Application encryption keys (required)
 - `API_TOKEN_SALT`: Salt for API tokens (required)
