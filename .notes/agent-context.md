@@ -1,8 +1,8 @@
 # Agent Context Guide - LWO Platform Rebuild
 
 **Last Updated:** 2026-05-06  
-**Current Phase:** Phase 1 - Foundation & Documentation (COMPLETE ✅)  
-**Project Status:** Ready for Phase 2 - Monorepo Scaffold
+**Current Phase:** Phase 2 - Monorepo Scaffold (COMPLETE ✅)  
+**Project Status:** Ready for Phase 3 - Database & Infrastructure
 
 ---
 
@@ -28,15 +28,24 @@ Complete rebuild of a small UK zoo's web platform, replacing an unmaintainable V
   - ✅ Task 2: Agent context guide (this document)
   - ✅ Task 3: Environment setup documentation
   - ✅ Task 4: Data model documentation
+- ✅ **Phase 2: Monorepo Scaffold (ALL TASKS COMPLETE)**
+  - ✅ Task 1: Turborepo + pnpm workspace setup
+  - ✅ Task 2: Next.js apps (public-site on port 3000, admin-site on port 3001)
+  - ✅ Task 3: Shared packages (@lwo/shared-types, @lwo/ui, @lwo/database, @lwo/eslint-config)
+  - ✅ Task 4: Strapi CMS setup (port 1337)
+  - ✅ Task 5: TypeScript path aliases configured
+  - ✅ Task 6: ESLint and Prettier configured
+  - ✅ Prisma schema with 8 entities defined and Prisma Client generated
+  - ✅ All type checks passing
+  - ✅ All builds working
 
 **Next Up:**
 
-- 🔜 Phase 2: Monorepo Scaffold
-  - Initialize Turborepo with pnpm
-  - Create Next.js apps (public + admin)
-  - Set up Strapi CMS
-  - Create shared packages
-  - Configure TypeScript and linting
+- 🔜 Phase 3: Database & Infrastructure
+  - Set up Supabase PostgreSQL database
+  - Configure database environments (local, UAT, prod)
+  - Run Prisma migrations
+  - Set up environment variables for all apps
 
 **Not Started:**
 

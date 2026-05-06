@@ -17,7 +17,7 @@ lwo/
 ├── apps/
 │   ├── public-site/      # Public-facing website (Next.js)
 │   ├── admin-site/       # Staff admin portal (Next.js)
-│   └── cms/              # Strapi CMS (not yet set up)
+│   └── cms/              # Strapi CMS
 ├── packages/
 │   ├── shared-types/     # Shared TypeScript types
 │   ├── ui/               # Shared React components
@@ -55,6 +55,7 @@ This will start:
 
 - Public site: http://localhost:3000
 - Admin site: http://localhost:3001
+- CMS: http://localhost:1337
 
 **Run individual apps:**
 
@@ -64,6 +65,9 @@ pnpm dev --filter=public-site
 
 # Admin site only
 pnpm dev --filter=admin-site
+
+# CMS only
+pnpm dev --filter=cms
 ```
 
 ### Common pnpm Commands
@@ -114,6 +118,9 @@ cp apps/public-site/.env.example apps/public-site/.env.local
 # Admin site
 cp apps/admin-site/.env.example apps/admin-site/.env.local
 
+# CMS
+cp apps/cms/.env.example apps/cms/.env
+
 # Database package
 cp packages/database/.env.example packages/database/.env
 ```
@@ -140,12 +147,13 @@ All project documentation is in the `.notes/` directory:
 - Next.js public and admin sites
 - Shared packages (types, UI, database)
 - Prisma schema defined
-
-🔜 Next:
-
 - Strapi CMS setup
 - TypeScript path aliases
 - ESLint configuration
+
+🔜 Next:
+
+- Phase 3: Database & Infrastructure setup
 
 See the [master project plan](.opencode/plans/lwo-platform-rebuild.md) for full details.
 
