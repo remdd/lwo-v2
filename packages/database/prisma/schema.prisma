@@ -1,0 +1,258 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Staff user accounts for admin site access
+model User {
+  id             String    @id @default(cuid())
+  username       String    @unique
+  email          String?   @unique
+  hashedPassword String
+  role           String    @default("staff") // Future: admin, staff, readonly
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  lastLoginAt    DateTime?
+
+  @@map("users")
+}
+
+// Customer records for bookings and orders
+model Customer {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  firstName String
+  lastName  String
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bookings Booking[]
+  orders   Order[]
+
+  @@map("customers")
+}
+
+// Bookable experiences (synced from Strapi)
+model Experience {
+  id          String   @id @default(cuid())
+  strapiId    Int      @unique // Link to Strapi content
+  name        String
+  slug        String   @unique
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  duration    Int // Duration in minutes
+  maxCapacity Int // Max participants per slot
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  bookings          Booking[]
+  availabilityRules AvailabilityRule[]
+
+  @@map("experiences")
+}
+
+// Availability rules for experiences
+model AvailabilityRule {
+  id           String   @id @default(cuid())
+  experienceId String
+  experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+
+  // Recurrence
+  dayOfWeek Int? // 0 = Sunday, 6 = Saturday (null = any day)
+  startDate DateTime? // Optional start date
+  endDate   DateTime? // Optional end date
+
+  // Time slots
+  startTime String // HH:MM format (e.g., "10:00")
+  endTime   String? // Optional end time if different from duration
+
+  // Capacity override
+  capacity Int? // Override maxCapacity for this rule
+
+  // Blackout dates
+  isBlackout Boolean @default(false) // If true, experience NOT available
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("availability_rules")
+}
+
+// Customer bookings for experiences
+model Booking {
+  id               String        @id @default(cuid())
+  confirmationCode String        @unique @default(cuid())
+
+  // Customer
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
+
+  // Experience
+  experienceId String
+  experience   Experience @relation(fields: [experienceId], references: [id])
+
+  // Booking details
+  bookingDate  DateTime // Date of visit
+  bookingTime  String // Time slot (HH:MM)
+  participants Int      @default(1) // Number of people
+
+  // Pricing
+  pricePerPerson Decimal @db.Decimal(10, 2)
+  totalPrice     Decimal @db.Decimal(10, 2)
+
+  // Status
+  status    BookingStatus @default(PENDING)
+  paymentId String?       @unique
+  payment   Payment?      @relation(fields: [paymentId], references: [id])
+
+  // Check-in
+  checkedInAt DateTime?
+  checkedInBy String? // User ID who checked in
+
+  // Metadata
+  specialRequests String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([bookingDate, bookingTime])
+  @@index([experienceId, bookingDate])
+  @@map("bookings")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CHECKED_IN
+  CANCELLED
+  NO_SHOW
+}
+
+// Payment transaction records
+model Payment {
+  id String @id @default(cuid())
+
+  // PayPal details
+  paypalOrderId   String  @unique
+  paypalCaptureId String? @unique
+
+  // Amount
+  amount   Decimal @db.Decimal(10, 2)
+  currency String  @default("GBP")
+
+  // Status
+  status PaymentStatus @default(PENDING)
+
+  // Metadata
+  paymentMethod String? // e.g., "paypal", "card"
+  payer         Json? // PayPal payer details
+  errorMessage  String? // If failed
+
+  // Relationships
+  booking Booking?
+  order   Order?
+
+  // Timestamps
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  completedAt DateTime?
+
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+  CANCELLED
+}
+
+// Physical products (synced from Strapi)
+model Product {
+  id          String   @id @default(cuid())
+  strapiId    Int      @unique
+  name        String
+  slug        String   @unique
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  stock       Int? // Null = unlimited
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orderItems OrderItem[]
+
+  @@map("products")
+}
+
+// Customer orders for products
+model Order {
+  id          String      @id @default(cuid())
+  orderNumber String      @unique @default(cuid())
+
+  // Customer
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
+
+  // Pricing
+  subtotal     Decimal @db.Decimal(10, 2)
+  shippingCost Decimal @db.Decimal(10, 2) @default(0)
+  total        Decimal @db.Decimal(10, 2)
+
+  // Status
+  status    OrderStatus @default(PENDING)
+  paymentId String?     @unique
+  payment   Payment?    @relation(fields: [paymentId], references: [id])
+
+  // Shipping
+  shippingAddress Json // Full address object
+
+  // Fulfillment
+  fulfilledAt    DateTime?
+  trackingNumber String?
+
+  // Metadata
+  items     OrderItem[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@map("orders")
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+// Order line items
+model OrderItem {
+  id String @id @default(cuid())
+
+  orderId String
+  order   Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  quantity  Int
+  priceEach Decimal @db.Decimal(10, 2)
+  total     Decimal @db.Decimal(10, 2)
+
+  createdAt DateTime @default(now())
+
+  @@map("order_items")
+}
