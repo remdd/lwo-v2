@@ -7,3 +7,4 @@ allowBuilds:
   prisma: false
   sharp: false
   unrs-resolver: false
+  better-sqlite3: true
