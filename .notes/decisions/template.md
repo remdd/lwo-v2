@@ -2,7 +2,7 @@
 
 **Date:** YYYY-MM-DD  
 **Status:** [Proposed | Accepted | Deprecated | Superseded]  
-**Deciders:** [List of people involved]  
+**Deciders:** [List of people involved]
 
 ## Context
 
@@ -19,12 +19,15 @@ Why are we making this decision? What are the key factors?
 ## Consequences
 
 ### Positive
+
 - What benefits does this decision bring?
 
 ### Negative
+
 - What drawbacks or trade-offs does this decision create?
 
 ### Neutral
+
 - What other impacts might this have?
 
 ## Alternatives Considered
@@ -32,6 +35,7 @@ Why are we making this decision? What are the key factors?
 What other options did we evaluate?
 
 ### Option 1: [Name]
+
 - Pros:
 - Cons:
 - Reason for rejection:

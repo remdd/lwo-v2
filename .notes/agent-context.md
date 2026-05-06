@@ -17,6 +17,7 @@ Complete rebuild of a small UK zoo's web platform, replacing an unmaintainable V
 ### Where Are We Now?
 
 **Completed:**
+
 - ✅ Initial project planning and requirements gathering
 - ✅ Architecture decision records (ADRs) for all key tech choices
 - ✅ Master project plan with 15 phases
@@ -29,6 +30,7 @@ Complete rebuild of a small UK zoo's web platform, replacing an unmaintainable V
   - ✅ Task 4: Data model documentation
 
 **Next Up:**
+
 - 🔜 Phase 2: Monorepo Scaffold
   - Initialize Turborepo with pnpm
   - Create Next.js apps (public + admin)
@@ -37,6 +39,7 @@ Complete rebuild of a small UK zoo's web platform, replacing an unmaintainable V
   - Configure TypeScript and linting
 
 **Not Started:**
+
 - Phase 3-15: See `.opencode/plans/lwo-platform-rebuild.md`
 
 ---
@@ -45,29 +48,29 @@ Complete rebuild of a small UK zoo's web platform, replacing an unmaintainable V
 
 ### Core Technologies
 
-| Technology | Purpose | Why We Chose It |
-|------------|---------|-----------------|
-| **TypeScript** | Type safety throughout | Project requirement, reduces bugs |
-| **Next.js 15** | Frontend framework | React-based, App Router, SSR/SSG support |
-| **React** | UI library | Modern, widely used, Robin's expertise |
-| **PostgreSQL** | Database | ACID compliance for bookings/payments |
-| **Prisma** | Database ORM | Type-safe queries, great DX, migrations |
-| **Strapi** | Headless CMS | Free self-hosted, flexible, Robin has experience |
-| **NextAuth.js** | Authentication | Simple, secure, Next.js native |
-| **PayPal SDK** | Payments | Business requirement, similar fees to Stripe |
-| **Turborepo** | Monorepo tool | Fast builds, caching, Robin has experience |
-| **pnpm** | Package manager | Fast, efficient, workspace support |
+| Technology      | Purpose                | Why We Chose It                                  |
+| --------------- | ---------------------- | ------------------------------------------------ |
+| **TypeScript**  | Type safety throughout | Project requirement, reduces bugs                |
+| **Next.js 15**  | Frontend framework     | React-based, App Router, SSR/SSG support         |
+| **React**       | UI library             | Modern, widely used, Robin's expertise           |
+| **PostgreSQL**  | Database               | ACID compliance for bookings/payments            |
+| **Prisma**      | Database ORM           | Type-safe queries, great DX, migrations          |
+| **Strapi**      | Headless CMS           | Free self-hosted, flexible, Robin has experience |
+| **NextAuth.js** | Authentication         | Simple, secure, Next.js native                   |
+| **PayPal SDK**  | Payments               | Business requirement, similar fees to Stripe     |
+| **Turborepo**   | Monorepo tool          | Fast builds, caching, Robin has experience       |
+| **pnpm**        | Package manager        | Fast, efficient, workspace support               |
 
 ### Infrastructure & Hosting
 
-| Component | Hosting | Cost | Rationale |
-|-----------|---------|------|-----------|
-| **Public Site** | Vercel Pro | ~$20/month | Best DX, CDN, auto-deploys for high-traffic site |
-| **Admin Site** | DigitalOcean Droplet | $12-24/month | Low traffic, cost-effective |
-| **Strapi CMS** | DigitalOcean Droplet | Included above | Same droplet as admin site |
-| **Database** | Supabase (free tier) | $0 (initially) | Managed Postgres, 500MB sufficient for launch |
-| **CI/CD** | GitHub Actions | Free | Native GitHub integration, Vercel support |
-| **Email** | Mailgun | Existing account | Current provider, no reason to change |
+| Component       | Hosting              | Cost             | Rationale                                        |
+| --------------- | -------------------- | ---------------- | ------------------------------------------------ |
+| **Public Site** | Vercel Pro           | ~$20/month       | Best DX, CDN, auto-deploys for high-traffic site |
+| **Admin Site**  | DigitalOcean Droplet | $12-24/month     | Low traffic, cost-effective                      |
+| **Strapi CMS**  | DigitalOcean Droplet | Included above   | Same droplet as admin site                       |
+| **Database**    | Supabase (free tier) | $0 (initially)   | Managed Postgres, 500MB sufficient for launch    |
+| **CI/CD**       | GitHub Actions       | Free             | Native GitHub integration, Vercel support        |
+| **Email**       | Mailgun              | Existing account | Current provider, no reason to change            |
 
 **Total estimated cost:** ~$32-47/month
 
@@ -132,26 +135,31 @@ Staff → Admin Site (DO) → PostgreSQL (Supabase)
 Full details in `.notes/decisions/`, but here's the quick reference:
 
 ### ADR-001: Hybrid Hosting Strategy
+
 - **Decision:** Public site on Vercel, admin/CMS on DigitalOcean
 - **Why:** Best DX for high-traffic public site, cost-effective for low-traffic internal apps
 - **Trade-off:** Two hosting providers vs one, but saves money and improves public site performance
 
 ### ADR-002: PostgreSQL + Prisma
+
 - **Decision:** Use PostgreSQL with Prisma ORM
 - **Why:** Type safety, ACID compliance for payments, relational model fits domain
 - **Trade-off:** Schema changes require migrations (vs MongoDB flexibility), but gain data integrity
 
 ### ADR-003: Turborepo Monorepo
+
 - **Decision:** Use Turborepo with pnpm workspaces
 - **Why:** Robin's familiarity, excellent caching, simple config
 - **Trade-off:** Monorepo complexity vs easier code sharing
 
 ### ADR-004: Strapi CMS
+
 - **Decision:** Self-host Strapi on DigitalOcean
 - **Why:** Free when self-hosted, Robin has experience, good admin UI for staff
 - **Trade-off:** We manage hosting/updates vs managed service, but no cost constraints
 
 ### ADR-005: NextAuth.js
+
 - **Decision:** Use NextAuth.js for admin authentication
 - **Why:** Simple, secure, Next.js native, perfect for our basic needs (2-3 users)
 - **Trade-off:** Still need password hashing implementation, but simpler than alternatives
@@ -230,6 +238,7 @@ pnpm --filter=database prisma migrate dev
 ## Critical Constraints & Priorities
 
 ### Must-Have Features (Priority Order)
+
 1. **Payment processing** - Must be rock-solid, backend-based, well-logged
 2. **Booking system** - Core business function
 3. **CMS integration** - Enable staff self-service
@@ -237,17 +246,20 @@ pnpm --filter=database prisma migrate dev
 5. **Email confirmations** - Customer communication
 
 ### Budget Constraints
+
 - Target: $32-47/month total infrastructure cost
 - Must use free tiers where possible
 - Avoid unnecessary paid services
 
 ### Maintenance Burden
+
 - **Primary goal:** Reduce Robin's ongoing maintenance time
 - Must be well-documented for future developers (human or AI)
 - Zoo staff should manage content without developer intervention
 - Comprehensive logging for quick issue diagnosis
 
 ### Testing Requirements
+
 - 80%+ coverage for payment/booking logic
 - 60%+ overall coverage
 - Integration tests for CMS/payment/booking flows
@@ -264,12 +276,14 @@ pnpm --filter=database prisma migrate dev
 ## Important Files & Resources
 
 ### Documentation
+
 - **Project Brief:** `.notes/initial_brief.md` - Original requirements and goals
 - **Master Plan:** `.opencode/plans/lwo-platform-rebuild.md` - All 15 phases of tasks
 - **ADRs:** `.notes/decisions/` - Why we made each technical decision
 - **This File:** `.notes/agent-context.md` - Current state summary
 
 ### Future Files (Not Yet Created)
+
 - **Environment Setup:** `.notes/setup/local-development.md`
 - **Data Models:** `.notes/architecture/data-models.md`
 - **Deployment Guide:** `.notes/setup/deployment.md`
@@ -299,9 +313,9 @@ From Robin's agent guidelines (see `.notes/coding/ai/agent-guidelines.md` if cre
 
 ## Version History
 
-| Date | Update | Changed By |
-|------|--------|------------|
-| 2026-05-06 | Initial creation, Project planning complete | AI Agent (OpenCode) |
+| Date       | Update                                             | Changed By          |
+| ---------- | -------------------------------------------------- | ------------------- |
+| 2026-05-06 | Initial creation, Project planning complete        | AI Agent (OpenCode) |
 | 2026-05-06 | **Phase 1 complete** - All foundation docs created | AI Agent (OpenCode) |
 
 ---

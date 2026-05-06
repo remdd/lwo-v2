@@ -12,12 +12,7 @@ export type ButtonProps = {
   disabled?: boolean;
 };
 
-export function Button({
-  children,
-  onClick,
-  variant = "primary",
-  disabled = false,
-}: ButtonProps) {
+export function Button({ children, onClick, variant = "primary", disabled = false }: ButtonProps) {
   const baseStyles = "px-4 py-2 rounded font-medium transition-colors";
   const variantStyles =
     variant === "primary"

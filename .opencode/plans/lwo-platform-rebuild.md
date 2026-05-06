@@ -5,6 +5,7 @@
 Complete rebuild of the Lakeland Wildlife Oasis web platform with modern tech stack, improved maintainability, and CMS-driven content management.
 
 **Key Goals:**
+
 - Minimize ongoing maintenance burden
 - Enable zoo staff to manage content independently
 - Robust payment processing and booking system
@@ -12,6 +13,7 @@ Complete rebuild of the Lakeland Wildlife Oasis web platform with modern tech st
 - Cost-effective infrastructure (~$32-47/month)
 
 **Tech Stack:**
+
 - **Frontend:** Next.js 15 + React + TypeScript
 - **Database:** PostgreSQL + Prisma
 - **CMS:** Strapi (self-hosted)
@@ -22,6 +24,7 @@ Complete rebuild of the Lakeland Wildlife Oasis web platform with modern tech st
 - **Monorepo:** Turborepo
 
 **Architecture:**
+
 ```
 apps/
   ├── public-site/      (Next.js → Vercel)
@@ -34,6 +37,7 @@ packages/
 ```
 
 **Environments:**
+
 - **Local:** Full stack on localhost
 - **UAT:** uat.wildlifeoasis.co.uk (basic auth protected)
 - **Production:** www.wildlifeoasis.co.uk

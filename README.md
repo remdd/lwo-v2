@@ -46,15 +46,18 @@ pnpm install
 ### Running Development Servers
 
 **Run all apps simultaneously:**
+
 ```bash
 pnpm dev
 ```
 
 This will start:
+
 - Public site: http://localhost:3000
 - Admin site: http://localhost:3001
 
 **Run individual apps:**
+
 ```bash
 # Public site only
 pnpm dev --filter=public-site
@@ -67,13 +70,13 @@ pnpm dev --filter=admin-site
 
 Unlike yarn, pnpm uses slightly different syntax. Here's a quick reference:
 
-| Task | pnpm Command | Yarn Equivalent |
-|------|--------------|-----------------|
-| Install dependencies | `pnpm install` | `yarn install` |
-| Add package to workspace root | `pnpm add -w <package>` | `yarn add -W <package>` |
-| Add package to specific app | `pnpm add <package> --filter=public-site` | `yarn workspace public-site add <package>` |
-| Run script in all workspaces | `pnpm -r <script>` | `yarn workspaces run <script>` |
-| Run script in specific workspace | `pnpm --filter=public-site <script>` | `yarn workspace public-site <script>` |
+| Task                             | pnpm Command                              | Yarn Equivalent                            |
+| -------------------------------- | ----------------------------------------- | ------------------------------------------ |
+| Install dependencies             | `pnpm install`                            | `yarn install`                             |
+| Add package to workspace root    | `pnpm add -w <package>`                   | `yarn add -W <package>`                    |
+| Add package to specific app      | `pnpm add <package> --filter=public-site` | `yarn workspace public-site add <package>` |
+| Run script in all workspaces     | `pnpm -r <script>`                        | `yarn workspaces run <script>`             |
+| Run script in specific workspace | `pnpm --filter=public-site <script>`      | `yarn workspace public-site <script>`      |
 
 ### Available Scripts
 
@@ -132,12 +135,14 @@ All project documentation is in the `.notes/` directory:
 **Phase 2: Monorepo Scaffold** - In Progress
 
 ✅ Completed:
+
 - Turborepo + pnpm workspace setup
 - Next.js public and admin sites
 - Shared packages (types, UI, database)
 - Prisma schema defined
 
 🔜 Next:
+
 - Strapi CMS setup
 - TypeScript path aliases
 - ESLint configuration

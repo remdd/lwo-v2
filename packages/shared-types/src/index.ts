@@ -19,13 +19,7 @@ export type PaymentStatus =
 /**
  * Order status enum
  */
-export type OrderStatus =
-  | "PENDING"
-  | "PAID"
-  | "PROCESSING"
-  | "SHIPPED"
-  | "DELIVERED"
-  | "CANCELLED";
+export type OrderStatus = "PENDING" | "PAID" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
 
 /**
  * Example type - will be expanded as we build features

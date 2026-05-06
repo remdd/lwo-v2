@@ -13,11 +13,11 @@ This document outlines deployment procedures for all environments of the LWO pla
 
 ## Environments
 
-| Environment | Purpose | URL | Auto-Deploy |
-|-------------|---------|-----|-------------|
-| **Local** | Development | localhost | Manual |
-| **UAT** | Testing/staging | uat.wildlifeoasis.co.uk | On push to `develop` |
-| **Production** | Live site | www.wildlifeoasis.co.uk | On push to `main` |
+| Environment    | Purpose         | URL                     | Auto-Deploy          |
+| -------------- | --------------- | ----------------------- | -------------------- |
+| **Local**      | Development     | localhost               | Manual               |
+| **UAT**        | Testing/staging | uat.wildlifeoasis.co.uk | On push to `develop` |
+| **Production** | Live site       | www.wildlifeoasis.co.uk | On push to `main`    |
 
 ---
 
@@ -28,11 +28,13 @@ This document outlines deployment procedures for all environments of the LWO pla
 **Apps:** `apps/public-site`
 
 **Deployment:**
+
 - **Production:** Auto-deploy on push to `main` branch
 - **UAT:** Auto-deploy on push to `develop` branch
 - **Preview:** Auto-deploy on pull requests
 
 **Process:**
+
 1. Push to GitHub
 2. GitHub webhook triggers Vercel
 3. Vercel builds Next.js app
@@ -40,6 +42,7 @@ This document outlines deployment procedures for all environments of the LWO pla
 5. Health check confirms deployment
 
 **Rollback:**
+
 - Use Vercel dashboard to rollback to previous deployment
 - Or redeploy previous git commit
 
@@ -50,6 +53,7 @@ This document outlines deployment procedures for all environments of the LWO pla
 **Deployment Method:** GitHub Actions → SSH → PM2
 
 **Process:**
+
 1. Push to GitHub
 2. GitHub Actions workflow runs
 3. SSH into DO droplet
@@ -61,6 +65,7 @@ This document outlines deployment procedures for all environments of the LWO pla
 9. Health check confirms
 
 **Manual Deployment:**
+
 ```bash
 # SSH into droplet
 ssh user@droplet-ip
@@ -169,6 +174,7 @@ pnpm --filter=database prisma migrate deploy
 ```
 
 **Important:**
+
 - Always test migrations in UAT first
 - Create database backup before production migrations
 - Migrations should be backwards-compatible when possible
@@ -220,11 +226,13 @@ pnpm --filter=database prisma migrate deploy
 ### Public Site (Vercel)
 
 **Option 1: Vercel Dashboard**
+
 1. Go to Vercel Dashboard → Deployments
 2. Find last known good deployment
 3. Click "Promote to Production"
 
 **Option 2: Git Revert**
+
 1. `git revert <commit-hash>`
 2. Push to `main`
 3. Vercel auto-deploys
@@ -232,6 +240,7 @@ pnpm --filter=database prisma migrate deploy
 ### Admin Site + Strapi (DigitalOcean)
 
 **Option 1: Git Revert**
+
 ```bash
 # On droplet
 cd /var/www/lwo
@@ -242,6 +251,7 @@ pm2 restart all
 ```
 
 **Option 2: Database Rollback**
+
 ```bash
 # If migration caused issues
 pnpm --filter=database prisma migrate resolve --rolled-back <migration-name>
@@ -255,10 +265,12 @@ pnpm --filter=database prisma migrate resolve --rolled-back <migration-name>
 ### Database Backup & Restore
 
 **Automated Backups:**
+
 - Supabase: Daily automatic backups (7-day retention on free tier)
 - DigitalOcean Managed Postgres: Configurable backup schedule
 
 **Manual Backup:**
+
 ```bash
 # Export database
 pg_dump -h <host> -U <user> -d <database> > backup-$(date +%Y%m%d).sql
@@ -268,6 +280,7 @@ psql -h <host> -U <user> -d <database> < backup-20260506.sql
 ```
 
 **Backup Strategy:**
+
 - Automated daily backups via hosting provider
 - Manual backup before major deployments
 - Store critical backups in separate location (e.g., AWS S3)
@@ -275,6 +288,7 @@ psql -h <host> -U <user> -d <database> < backup-20260506.sql
 ### Server Failure (DigitalOcean)
 
 **Recovery Steps:**
+
 1. Spin up new droplet
 2. Install required software (Node.js, nginx, PM2, PostgreSQL client)
 3. Clone repository
@@ -284,6 +298,7 @@ psql -h <host> -U <user> -d <database> < backup-20260506.sql
 7. Update DNS if needed
 
 **Prevention:**
+
 - Document server setup process
 - Consider DigitalOcean Snapshots for quick recovery
 - Keep infrastructure-as-code (future enhancement)
@@ -339,6 +354,7 @@ wildlifeoasis.co.uk         A      <Vercel-IP> or CNAME www
 **Symptoms:** GitHub Actions workflow fails, Vercel deployment error
 
 **Steps:**
+
 1. Check workflow logs in GitHub Actions
 2. Verify environment variables are set
 3. Check build logs for errors
@@ -350,6 +366,7 @@ wildlifeoasis.co.uk         A      <Vercel-IP> or CNAME www
 **Symptoms:** PM2 shows app in error state, 502 Bad Gateway
 
 **Steps:**
+
 1. Check PM2 logs: `pm2 logs <app-name>`
 2. Verify environment variables
 3. Check database connectivity
@@ -362,6 +379,7 @@ wildlifeoasis.co.uk         A      <Vercel-IP> or CNAME www
 **Symptoms:** Migration error, app can't connect to DB
 
 **Steps:**
+
 1. Check migration logs
 2. Verify database connectivity
 3. Check for schema conflicts
@@ -374,6 +392,7 @@ wildlifeoasis.co.uk         A      <Vercel-IP> or CNAME www
 **Symptoms:** High response times, timeout errors
 
 **Steps:**
+
 1. Check Vercel/PM2 metrics
 2. Review database query performance (Supabase dashboard)
 3. Check for N+1 queries

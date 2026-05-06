@@ -9,6 +9,7 @@
 ## Overview
 
 This document defines the data models for the LWO platform. The relational structure supports:
+
 - Booking experiences with availability management
 - E-commerce for physical products
 - Payment processing and order tracking
@@ -67,6 +68,7 @@ model User {
 ```
 
 **Fields:**
+
 - `id` - Unique identifier (CUID)
 - `username` - Login username (unique)
 - `email` - Optional email address
@@ -77,6 +79,7 @@ model User {
 - `lastLoginAt` - Last successful login
 
 **Notes:**
+
 - Passwords hashed with bcrypt (10 rounds)
 - NextAuth handles session management
 - Initially 2-3 accounts total (may be shared)
@@ -105,6 +108,7 @@ model Customer {
 ```
 
 **Fields:**
+
 - `id` - Unique identifier
 - `email` - Customer email (unique, used for lookups)
 - `firstName` / `lastName` - Customer name
@@ -112,10 +116,12 @@ model Customer {
 - `createdAt` / `updatedAt` - Timestamps
 
 **Relationships:**
+
 - One customer → Many bookings
 - One customer → Many orders
 
 **Notes:**
+
 - Created during checkout (first booking/purchase)
 - Email is unique identifier for returning customers
 - No password/authentication (anonymous purchases)
@@ -148,6 +154,7 @@ model Experience {
 ```
 
 **Fields:**
+
 - `id` - Unique identifier
 - `strapiId` - ID from Strapi CMS (for syncing)
 - `name` - Experience name
@@ -159,10 +166,12 @@ model Experience {
 - `isActive` - Whether currently bookable
 
 **Relationships:**
+
 - One experience → Many bookings
 - One experience → Many availability rules
 
 **Notes:**
+
 - Primary management in Strapi CMS
 - This table caches key data for performance/availability checks
 - Sync mechanism TBD (webhook or scheduled job)
@@ -183,17 +192,17 @@ model AvailabilityRule {
   dayOfWeek    Int?      // 0 = Sunday, 6 = Saturday (null = any day)
   startDate    DateTime? // Optional start date
   endDate      DateTime? // Optional end date
-  
+
   // Time slots
   startTime    String    // HH:MM format (e.g., "10:00")
   endTime      String?   // Optional end time if different from duration
-  
+
   // Capacity override
   capacity     Int?      // Override maxCapacity for this rule
-  
+
   // Blackout dates
   isBlackout   Boolean   @default(false) // If true, experience NOT available
-  
+
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
@@ -202,6 +211,7 @@ model AvailabilityRule {
 ```
 
 **Fields:**
+
 - `experienceId` - Link to experience
 - `dayOfWeek` - Day of week (0-6, null = any)
 - `startDate` / `endDate` - Date range (optional)
@@ -211,6 +221,7 @@ model AvailabilityRule {
 - `isBlackout` - Block availability (holidays, etc.)
 
 **Notes:**
+
 - Complex availability logic (daily slots, seasonal changes, blackouts)
 - Multiple rules can apply to same experience
 - Query logic: Find applicable rules → Calculate available slots
@@ -225,33 +236,33 @@ Customer reservation for an experience on a specific date/time.
 model Booking {
   id                String    @id @default(cuid())
   confirmationCode  String    @unique @default(cuid())
-  
+
   // Customer
   customerId        String
   customer          Customer  @relation(fields: [customerId], references: [id])
-  
+
   // Experience
   experienceId      String
   experience        Experience @relation(fields: [experienceId], references: [id])
-  
+
   // Booking details
   bookingDate       DateTime  // Date of visit
   bookingTime       String    // Time slot (HH:MM)
   participants      Int       @default(1) // Number of people
-  
+
   // Pricing
   pricePerPerson    Decimal   @db.Decimal(10, 2)
   totalPrice        Decimal   @db.Decimal(10, 2)
-  
+
   // Status
   status            BookingStatus @default(PENDING)
   paymentId         String?   @unique
   payment           Payment?  @relation(fields: [paymentId], references: [id])
-  
+
   // Check-in
   checkedInAt       DateTime?
   checkedInBy       String?   // User ID who checked in
-  
+
   // Metadata
   specialRequests   String?
   createdAt         DateTime  @default(now())
@@ -272,6 +283,7 @@ enum BookingStatus {
 ```
 
 **Fields:**
+
 - `confirmationCode` - Unique code for customer reference
 - `customerId` / `experienceId` - Links to customer and experience
 - `bookingDate` / `bookingTime` - When experience happens
@@ -283,11 +295,13 @@ enum BookingStatus {
 - `specialRequests` - Customer notes
 
 **Relationships:**
+
 - Many bookings → One customer
 - Many bookings → One experience
 - One booking → One payment (optional, if paid)
 
 **Indexes:**
+
 - By date/time for calendar queries
 - By experience + date for availability checks
 
@@ -300,27 +314,27 @@ Payment transaction records for bookings and orders.
 ```prisma
 model Payment {
   id                String        @id @default(cuid())
-  
+
   // PayPal details
   paypalOrderId     String        @unique
   paypalCaptureId   String?       @unique
-  
+
   // Amount
   amount            Decimal       @db.Decimal(10, 2)
   currency          String        @default("GBP")
-  
+
   // Status
   status            PaymentStatus @default(PENDING)
-  
+
   // Metadata
   paymentMethod     String?       // e.g., "paypal", "card"
   payer             Json?         // PayPal payer details
   errorMessage      String?       // If failed
-  
+
   // Relationships
   booking           Booking?
   order             Order?
-  
+
   // Timestamps
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
@@ -340,6 +354,7 @@ enum PaymentStatus {
 ```
 
 **Fields:**
+
 - `paypalOrderId` - PayPal order ID (from create-order)
 - `paypalCaptureId` - PayPal capture ID (from capture-order)
 - `amount` / `currency` - Payment amount
@@ -350,9 +365,11 @@ enum PaymentStatus {
 - `completedAt` - When payment completed
 
 **Relationships:**
+
 - One payment → One booking OR one order (not both)
 
 **Notes:**
+
 - Comprehensive logging for debugging payment issues
 - Store PayPal transaction IDs for reconciliation
 - Status transitions: PENDING → PROCESSING → COMPLETED/FAILED
@@ -383,6 +400,7 @@ model Product {
 ```
 
 **Fields:**
+
 - `strapiId` - Link to Strapi CMS
 - `name` / `slug` / `description` - Product details
 - `price` - Cost (GBP)
@@ -390,6 +408,7 @@ model Product {
 - `isActive` - Whether currently available
 
 **Relationships:**
+
 - One product → Many order items
 
 ---
@@ -402,28 +421,28 @@ Purchase of physical products (non-booking purchases).
 model Order {
   id                String      @id @default(cuid())
   orderNumber       String      @unique @default(cuid())
-  
+
   // Customer
   customerId        String
   customer          Customer    @relation(fields: [customerId], references: [id])
-  
+
   // Pricing
   subtotal          Decimal     @db.Decimal(10, 2)
   shippingCost      Decimal     @db.Decimal(10, 2) @default(0)
   total             Decimal     @db.Decimal(10, 2)
-  
+
   // Status
   status            OrderStatus @default(PENDING)
   paymentId         String?     @unique
   payment           Payment?    @relation(fields: [paymentId], references: [id])
-  
+
   // Shipping
   shippingAddress   Json        // Full address object
-  
+
   // Fulfillment
   fulfilledAt       DateTime?
   trackingNumber    String?
-  
+
   // Metadata
   items             OrderItem[]
   createdAt         DateTime    @default(now())
@@ -445,14 +464,14 @@ model OrderItem {
   id         String   @id @default(cuid())
   orderId    String
   order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  
+
   productId  String
   product    Product  @relation(fields: [productId], references: [id])
-  
+
   quantity   Int
   priceEach  Decimal  @db.Decimal(10, 2)
   total      Decimal  @db.Decimal(10, 2)
-  
+
   createdAt  DateTime @default(now())
 
   @@map("order_items")
@@ -460,6 +479,7 @@ model OrderItem {
 ```
 
 **Fields (Order):**
+
 - `orderNumber` - Customer-facing order reference
 - `customerId` - Link to customer
 - `subtotal` / `shippingCost` / `total` - Pricing breakdown
@@ -469,12 +489,14 @@ model OrderItem {
 - `fulfilledAt` / `trackingNumber` - Fulfillment tracking
 
 **Fields (OrderItem):**
+
 - Links to order and product
 - `quantity` - Number ordered
 - `priceEach` - Unit price (captured at purchase)
 - `total` - Line total
 
 **Notes:**
+
 - Lower priority than booking system
 - Shipping may be digital (adoption packs = PDF?)
 - Stock management optional initially
@@ -486,6 +508,7 @@ model OrderItem {
 Content managed in Strapi CMS (not in main database):
 
 ### NewsArticle
+
 - `title` - Article title
 - `slug` - URL slug
 - `content` - Rich text content
@@ -495,6 +518,7 @@ Content managed in Strapi CMS (not in main database):
 - `featuredImage` - Image upload
 
 ### StaticPage
+
 - `title` - Page title
 - `slug` - URL slug
 - `content` - Flexible content blocks
@@ -508,6 +532,7 @@ Content managed in Strapi CMS (not in main database):
 ## Data Flow Examples
 
 ### Booking Flow
+
 1. Customer selects experience + date/time on public site
 2. Check availability (query `Booking` + `AvailabilityRule`)
 3. Create `Payment` record (status: PENDING)
@@ -519,12 +544,14 @@ Content managed in Strapi CMS (not in main database):
 9. Send confirmation email
 
 ### Check-In Flow
+
 1. Staff opens admin site booking calendar
 2. Search by customer name/email or date
 3. Find booking, verify details
 4. Mark as checked in (`checkedInAt`, `checkedInBy`, status: CHECKED_IN)
 
 ### Availability Check
+
 1. Query `AvailabilityRule` for experience + date
 2. Calculate available slots based on rules
 3. Query `Booking` for that experience + date
@@ -536,6 +563,7 @@ Content managed in Strapi CMS (not in main database):
 ## Indexes & Performance
 
 **Critical Indexes:**
+
 - `Booking.bookingDate + bookingTime` - Calendar queries
 - `Booking.experienceId + bookingDate` - Availability checks
 - `Customer.email` - Customer lookup
@@ -544,6 +572,7 @@ Content managed in Strapi CMS (not in main database):
 - `Product.slug` - Public site lookups
 
 **Query Optimization:**
+
 - Availability queries may benefit from caching
 - Consider materialized views for complex availability logic
 - Index on `Booking.status` for admin filters
@@ -562,6 +591,7 @@ Content managed in Strapi CMS (not in main database):
 ## Future Enhancements
 
 **Potential additions (not in scope initially):**
+
 - `Review` model for customer reviews
 - `Voucher` model for gift vouchers
 - `Membership` model for season tickets

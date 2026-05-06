@@ -20,6 +20,7 @@ This document provides a complete reference for all environment variables used a
 ```bash
 DATABASE_URL="postgresql://user:password@host:port/database"
 ```
+
 - **Required:** Yes
 - **Description:** PostgreSQL connection string for Prisma
 - **Local:** Points to local Postgres or Supabase dev instance
@@ -31,13 +32,14 @@ DATABASE_URL="postgresql://user:password@host:port/database"
 NEXT_PUBLIC_STRAPI_URL="http://localhost:1337"
 STRAPI_API_TOKEN="your-strapi-api-token"
 ```
+
 - **NEXT_PUBLIC_STRAPI_URL**
   - **Required:** Yes
   - **Description:** Base URL for Strapi API
   - **Local:** `http://localhost:1337`
   - **UAT:** `https://uat.wildlifeoasis.co.uk/cms` (or separate CMS subdomain)
   - **Prod:** `https://www.wildlifeoasis.co.uk/cms` (or separate CMS subdomain)
-  - **Note:** Must be public (NEXT_PUBLIC_*) for client-side fetching
+  - **Note:** Must be public (NEXT*PUBLIC*\*) for client-side fetching
 
 - **STRAPI_API_TOKEN**
   - **Required:** Yes
@@ -52,6 +54,7 @@ NEXT_PUBLIC_PAYPAL_CLIENT_ID="your-paypal-client-id"
 PAYPAL_CLIENT_SECRET="your-paypal-client-secret"
 PAYPAL_MODE="sandbox"
 ```
+
 - **NEXT_PUBLIC_PAYPAL_CLIENT_ID**
   - **Required:** Yes
   - **Description:** PayPal Client ID (public)
@@ -79,6 +82,7 @@ MAILGUN_API_KEY="your-mailgun-api-key"
 MAILGUN_DOMAIN="your-domain.mailgun.org"
 MAILGUN_FROM_EMAIL="noreply@wildlifeoasis.co.uk"
 ```
+
 - **MAILGUN_API_KEY**
   - **Required:** Yes
   - **Description:** Mailgun API key for sending emails
@@ -99,6 +103,7 @@ MAILGUN_FROM_EMAIL="noreply@wildlifeoasis.co.uk"
 ```bash
 NEXT_PUBLIC_GA_MEASUREMENT_ID="G-XXXXXXXXXX"
 ```
+
 - **Required:** Optional (recommended)
 - **Description:** Google Analytics 4 Measurement ID
 - **Get From:** Google Analytics dashboard
@@ -109,6 +114,7 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID="G-XXXXXXXXXX"
 ```bash
 NEXT_PUBLIC_SITE_URL="http://localhost:3000"
 ```
+
 - **Required:** Yes
 - **Description:** Base URL of the public site
 - **Local:** `http://localhost:3000`
@@ -125,6 +131,7 @@ NEXT_PUBLIC_SITE_URL="http://localhost:3000"
 ```bash
 DATABASE_URL="postgresql://user:password@host:port/database"
 ```
+
 - **Required:** Yes
 - **Description:** PostgreSQL connection string for Prisma
 - **Note:** Same database as public site
@@ -135,6 +142,7 @@ DATABASE_URL="postgresql://user:password@host:port/database"
 NEXTAUTH_URL="http://localhost:3001"
 NEXTAUTH_SECRET="your-nextauth-secret"
 ```
+
 - **NEXTAUTH_URL**
   - **Required:** Yes
   - **Description:** Base URL of the admin site
@@ -153,6 +161,7 @@ NEXTAUTH_SECRET="your-nextauth-secret"
 ```bash
 NEXT_PUBLIC_SITE_URL="http://localhost:3001"
 ```
+
 - **Required:** Yes
 - **Description:** Base URL of the admin site
 - **Local:** `http://localhost:3001`
@@ -170,6 +179,7 @@ HOST=0.0.0.0
 PORT=1337
 NODE_ENV=development
 ```
+
 - **HOST**
   - **Required:** Yes
   - **Description:** Host to bind Strapi server
@@ -197,6 +207,7 @@ DATABASE_USERNAME=postgres
 DATABASE_PASSWORD=password
 DATABASE_SSL=false
 ```
+
 - **DATABASE_CLIENT**
   - **Required:** Yes
   - **Value:** `postgres`
@@ -234,6 +245,7 @@ APP_KEYS=key1,key2,key3,key4
 API_TOKEN_SALT=your-api-token-salt
 TRANSFER_TOKEN_SALT=your-transfer-token-salt
 ```
+
 - **Generate All Secrets:**
   ```bash
   node -e "console.log(require('crypto').randomBytes(64).toString('base64'));"
@@ -246,6 +258,7 @@ TRANSFER_TOKEN_SALT=your-transfer-token-salt
 ```bash
 PUBLIC_URL=http://localhost:1337
 ```
+
 - **Required:** Yes
 - **Local:** `http://localhost:1337`
 - **UAT:** `https://cms-uat.wildlifeoasis.co.uk`
@@ -258,6 +271,7 @@ PUBLIC_URL=http://localhost:1337
 ```bash
 DATABASE_URL="postgresql://user:password@host:port/database"
 ```
+
 - **Required:** Yes
 - **Description:** PostgreSQL connection string for Prisma CLI operations
 - **Note:** Same as other apps, used for migrations and Prisma Studio
@@ -268,36 +282,36 @@ DATABASE_URL="postgresql://user:password@host:port/database"
 
 ### Local Development
 
-| Variable | Value |
-|----------|-------|
-| Public Site URL | `http://localhost:3000` |
-| Admin Site URL | `http://localhost:3001` |
-| Strapi URL | `http://localhost:1337` |
-| Database | Local Postgres or Supabase dev |
-| PayPal Mode | `sandbox` |
-| Node Environment | `development` |
+| Variable         | Value                          |
+| ---------------- | ------------------------------ |
+| Public Site URL  | `http://localhost:3000`        |
+| Admin Site URL   | `http://localhost:3001`        |
+| Strapi URL       | `http://localhost:1337`        |
+| Database         | Local Postgres or Supabase dev |
+| PayPal Mode      | `sandbox`                      |
+| Node Environment | `development`                  |
 
 ### UAT (Staging)
 
-| Variable | Value |
-|----------|-------|
-| Public Site URL | `https://uat.wildlifeoasis.co.uk` |
-| Admin Site URL | `https://admin-uat.wildlifeoasis.co.uk` |
-| Strapi URL | `https://cms-uat.wildlifeoasis.co.uk` |
-| Database | Supabase UAT instance |
-| PayPal Mode | `sandbox` |
-| Node Environment | `production` |
+| Variable         | Value                                   |
+| ---------------- | --------------------------------------- |
+| Public Site URL  | `https://uat.wildlifeoasis.co.uk`       |
+| Admin Site URL   | `https://admin-uat.wildlifeoasis.co.uk` |
+| Strapi URL       | `https://cms-uat.wildlifeoasis.co.uk`   |
+| Database         | Supabase UAT instance                   |
+| PayPal Mode      | `sandbox`                               |
+| Node Environment | `production`                            |
 
 ### Production
 
-| Variable | Value |
-|----------|-------|
-| Public Site URL | `https://www.wildlifeoasis.co.uk` |
-| Admin Site URL | `https://admin.wildlifeoasis.co.uk` |
-| Strapi URL | `https://cms.wildlifeoasis.co.uk` |
-| Database | Supabase prod or DO Managed Postgres |
-| PayPal Mode | `live` |
-| Node Environment | `production` |
+| Variable         | Value                                |
+| ---------------- | ------------------------------------ |
+| Public Site URL  | `https://www.wildlifeoasis.co.uk`    |
+| Admin Site URL   | `https://admin.wildlifeoasis.co.uk`  |
+| Strapi URL       | `https://cms.wildlifeoasis.co.uk`    |
+| Database         | Supabase prod or DO Managed Postgres |
+| PayPal Mode      | `live`                               |
+| Node Environment | `production`                         |
 
 ---
 

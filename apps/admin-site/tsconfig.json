@@ -19,7 +19,10 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@lwo/shared-types": ["../../packages/shared-types/src"],
+      "@lwo/ui": ["../../packages/ui/src"],
+      "@lwo/database": ["../../packages/database/src"]
     }
   },
   "include": [

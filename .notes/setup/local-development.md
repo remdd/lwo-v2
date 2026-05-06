@@ -11,12 +11,12 @@ Before setting up the LWO platform locally, ensure you have the following instal
 
 ### Required Software
 
-| Software | Minimum Version | Purpose | Installation |
-|----------|-----------------|---------|--------------|
-| **Node.js** | 20.x LTS | JavaScript runtime | [nodejs.org](https://nodejs.org/) |
-| **pnpm** | 8.x | Package manager | `npm install -g pnpm` |
-| **Git** | 2.x | Version control | [git-scm.com](https://git-scm.com/) |
-| **PostgreSQL** | 14.x | Database (local dev) | [postgresql.org](https://www.postgresql.org/) OR use Supabase |
+| Software       | Minimum Version | Purpose              | Installation                                                  |
+| -------------- | --------------- | -------------------- | ------------------------------------------------------------- |
+| **Node.js**    | 20.x LTS        | JavaScript runtime   | [nodejs.org](https://nodejs.org/)                             |
+| **pnpm**       | 8.x             | Package manager      | `npm install -g pnpm`                                         |
+| **Git**        | 2.x             | Version control      | [git-scm.com](https://git-scm.com/)                           |
+| **PostgreSQL** | 14.x            | Database (local dev) | [postgresql.org](https://www.postgresql.org/) OR use Supabase |
 
 ### Recommended Tools
 
@@ -99,6 +99,7 @@ pnpm --filter=database prisma migrate dev
 ```
 
 This will:
+
 - Create database tables based on Prisma schema
 - Generate the Prisma Client for type-safe queries
 - Seed the database with initial data (if seed script exists)
@@ -341,6 +342,7 @@ rm -rf .turbo
 ### Making Changes
 
 1. **Create a feature branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -351,6 +353,7 @@ rm -rf .turbo
    - Update documentation as needed
 
 3. **Test locally**
+
    ```bash
    pnpm lint
    pnpm type-check
@@ -359,6 +362,7 @@ rm -rf .turbo
    ```
 
 4. **Commit changes**
+
    ```bash
    git add .
    git commit -m "Description of changes"

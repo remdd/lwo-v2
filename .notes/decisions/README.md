@@ -12,18 +12,18 @@ This directory contains records of all significant architectural and technical d
 
 ## Summary of Key Decisions
 
-| Decision | Choice | Primary Rationale |
-|----------|--------|-------------------|
-| **Public Site Hosting** | Vercel Pro | Best DX, CDN, auto-deploys for high-traffic site |
-| **Admin/CMS Hosting** | DigitalOcean Droplet | Cost-effective for low-traffic internal apps |
-| **Database** | PostgreSQL + Prisma | Type-safety, ACID compliance, relational model fits domain |
-| **Database Hosting** | Supabase (free tier) | Managed Postgres, sufficient for launch, easy migration path |
-| **Monorepo Tool** | Turborepo + pnpm | Existing familiarity, excellent caching, simple config |
-| **CMS** | Strapi (self-hosted) | Free, flexible, existing familiarity, good admin UI |
-| **Authentication** | NextAuth.js | Next.js native, simple, secure by default |
-| **Payment Processing** | PayPal Server SDK | Business requirement, similar fees to Stripe |
-| **CI/CD** | GitHub Actions | Free, simple, excellent Vercel integration |
-| **Email** | Mailgun | Existing provider, no reason to change |
+| Decision                | Choice               | Primary Rationale                                            |
+| ----------------------- | -------------------- | ------------------------------------------------------------ |
+| **Public Site Hosting** | Vercel Pro           | Best DX, CDN, auto-deploys for high-traffic site             |
+| **Admin/CMS Hosting**   | DigitalOcean Droplet | Cost-effective for low-traffic internal apps                 |
+| **Database**            | PostgreSQL + Prisma  | Type-safety, ACID compliance, relational model fits domain   |
+| **Database Hosting**    | Supabase (free tier) | Managed Postgres, sufficient for launch, easy migration path |
+| **Monorepo Tool**       | Turborepo + pnpm     | Existing familiarity, excellent caching, simple config       |
+| **CMS**                 | Strapi (self-hosted) | Free, flexible, existing familiarity, good admin UI          |
+| **Authentication**      | NextAuth.js          | Next.js native, simple, secure by default                    |
+| **Payment Processing**  | PayPal Server SDK    | Business requirement, similar fees to Stripe                 |
+| **CI/CD**               | GitHub Actions       | Free, simple, excellent Vercel integration                   |
+| **Email**               | Mailgun              | Existing provider, no reason to change                       |
 
 ## About ADRs
 

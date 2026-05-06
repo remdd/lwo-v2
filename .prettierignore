@@ -1,0 +1,30 @@
+# Dependencies
+node_modules
+.pnp
+
+# Build outputs
+.next
+out
+dist
+build
+.turbo
+
+# Misc
+.DS_Store
+*.pem
+
+# Logs
+*.log
+
+# Coverage
+coverage
+
+# Cache
+.cache
+.tmp
+
+# Environment
+.env*.local
+
+# Prisma
+**/prisma/migrations/
