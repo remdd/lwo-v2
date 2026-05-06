@@ -1,0 +1,8 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["@whomwah/opencode-nelson-muntz"],
+  "instructions": [
+    "~/Dev/repos/notes/coding/ai/agent-guidelines.md",
+    "~/Dev/repos/notes/coding/ai/agent-guidelines-hardened.md"
+  ]
+}
