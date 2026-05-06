@@ -1,6 +1,6 @@
 // Shared UI components for LWO platform
 
-import type { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 
 /**
  * Simple button component example
