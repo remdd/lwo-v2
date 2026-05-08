@@ -1,0 +1,20 @@
+{
+  "buildCommand": "pnpm turbo run build --filter=public-site",
+  "installCommand": "pnpm install",
+  "framework": "nextjs",
+  "outputDirectory": ".next",
+  "devCommand": "pnpm dev",
+  "regions": ["lhr1"],
+  "env": {
+    "DATABASE_URL": "@database_url",
+    "NEXT_PUBLIC_STRAPI_URL": "@strapi_url",
+    "STRAPI_API_TOKEN": "@strapi_api_token",
+    "NEXT_PUBLIC_PAYPAL_CLIENT_ID": "@paypal_client_id",
+    "PAYPAL_CLIENT_SECRET": "@paypal_client_secret",
+    "PAYPAL_MODE": "@paypal_mode",
+    "MAILGUN_API_KEY": "@mailgun_api_key",
+    "MAILGUN_DOMAIN": "@mailgun_domain",
+    "MAILGUN_FROM_EMAIL": "@mailgun_from_email",
+    "NEXT_PUBLIC_GA_MEASUREMENT_ID": "@ga_measurement_id"
+  }
+}
